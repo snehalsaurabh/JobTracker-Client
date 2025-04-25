@@ -103,41 +103,24 @@ export default function JobTracker() {
 
   // Update a job
   const updateJob = async (id, updatedJob) => {
-    if (useMockData) {
-      // If using mock data, just update the local state
-      const updatedJobs = jobs.map((job) => (job._id === id ? { ...job, ...updatedJob } : job))
-      setJobs(updatedJobs)
-      setFilteredJobs(filteredJobs.map((job) => (job._id === id ? { ...job, ...updatedJob } : job)))
-      showToast("Job application updated successfully")
-      return true
-    }
-
     try {
-      await axios.put(`${API_URL}/jobs/${id}`, updatedJob)
-      const updatedJobs = jobs.map((job) => (job._id === id ? { ...job, ...updatedJob } : job))
-      setJobs(updatedJobs)
-      setFilteredJobs(filteredJobs.map((job) => (job._id === id ? { ...job, ...updatedJob } : job)))
-      showToast("Job application updated successfully")
-      return true
+      await api.put(`/jobs/${id}`, updatedJob);
+      const updatedJobs = jobs.map((job) => (job._id === id ? { ...job, ...updatedJob } : job));
+      setJobs(updatedJobs);
+      setFilteredJobs(filteredJobs.map((job) => (job._id === id ? { ...job, ...updatedJob } : job)));
+      showToast("Job application updated successfully");
+      return true;
     } catch (error) {
-      console.error("Error updating job:", error)
-      showToast("Could not update your job application", "error")
-      return false
+      console.error("Error updating job:", error);
+      showToast("Could not update your job application", "error");
+      return false;
     }
-  }
+  };
 
   // Delete a job
   const deleteJob = async (id) => {
-    if (useMockData) {
-      const updatedJobs = jobs.filter((job) => job._id !== id);
-      setJobs(updatedJobs);
-      setFilteredJobs(filteredJobs.filter((job) => job._id !== id));
-      showToast("Job application deleted successfully");
-      return;
-    }
-  
     try {
-      await axios.delete(`${API_URL}/jobs/${id}`);
+      await api.delete(`/jobs/${id}`);
       const updatedJobs = jobs.filter((job) => job._id !== id);
       setJobs(updatedJobs);
       setFilteredJobs(filteredJobs.filter((job) => job._id !== id));
