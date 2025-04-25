@@ -17,6 +17,34 @@ const api = axios.create({
     'Content-Type': 'application/json'
   }
 });
+
+// Add request interceptor for debugging
+api.interceptors.request.use(request => {
+  console.log('Starting Request:', {
+    url: request.url,
+    method: request.method,
+    data: request.data
+  });
+  return request;
+});
+
+// Add response interceptor for debugging
+api.interceptors.response.use(
+  response => {
+    console.log('Response:', response.data);
+    return response;
+  },
+  error => {
+    console.error('API Error:', {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status,
+      config: error.config
+    });
+    return Promise.reject(error);
+  }
+);
+
 // Sample mock data for when the API is unavailable
 const MOCK_JOBS = [
   {
