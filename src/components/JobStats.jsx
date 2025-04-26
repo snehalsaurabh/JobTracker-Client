@@ -3,9 +3,11 @@ import AssessmentIcon from "@mui/icons-material/Assessment";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { useMobile } from "../hooks/useMobile"
 
 export function JobStats({ jobs }) {
   const totalJobs = jobs.length;
+  const isMobile = useMobile();
 
   const statusCounts = jobs.reduce((acc, job) => {
     acc[job.status] = (acc[job.status] || 0) + 1;
@@ -21,7 +23,7 @@ export function JobStats({ jobs }) {
     <Box sx={{ width: '100%', p: 2 }}>
       <Grid 
         container 
-        spacing={3} 
+        spacing={isMobile ? 2 : 3} 
         sx={{ 
           display: 'flex',
           flexDirection: 'row',
@@ -64,8 +66,8 @@ export function JobStats({ jobs }) {
           key={item.title} 
           item 
           xs={12} 
-          sm={6} 
-          md={3} 
+          sm={isMobile ? 12 : 6} 
+          md={isMobile ? 12 : 3} 
           sx={{ 
             display: 'flex',
             flex: 1,
@@ -74,7 +76,7 @@ export function JobStats({ jobs }) {
           <Paper
             elevation={1}
             sx={{
-              p: 3,
+              p: isMobile ? 2 : 3,
               display: "flex",
               flexDirection: "column",
               width: '100%',
@@ -107,10 +109,10 @@ export function JobStats({ jobs }) {
             </Box>
             
             <Typography 
-              variant="h4" 
+              variant={isMobile ? "h5" : "h4"} 
               component="div" 
               sx={{ 
-                fontSize: '2.5rem',
+                fontSize: isMobile ? '2rem' : '2.5rem',
                 fontWeight: 'bold',
                 textAlign: 'center',
                 my: 2
